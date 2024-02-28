@@ -1,15 +1,91 @@
-body{
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 
-    font-family: Arial, Arial, Helvetica, sans-serif;
-    text-align: center;
+}
+
+
+body{
+    font-family: monospace;
+    background-color: #716c9d;
+    padding: 100px;
+    margin: auto;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    overflow: hidden;
+    
 }
 
 .container{
- margin-top:50px;
-
-
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(2, 2, 2, 0.19);
+    padding: 80px;
+    
 }
-h1{
 
-    color:aqua
+
+
+
+.container form{
+    display: grid;
+    background-color: #5b5887;
+    z-index: 10;
+    width: 60%;
+    justify-content: center;
+    grid-template-columns: 40% 40%;
+    padding: 50px;
+    border-radius: 5px;
+    box-shadow: 0 12px 16px 0 rgba(93, 68, 178, 0.24), 0 17px 50px 0 rgba(2, 2, 2, 0.19);
+    row-gap: 20px;
+    
+    }
+
+.container input:active{
+    transform: translateY(2px);
+}
+form label{
+    display: block;
+    font-size: 1.2em;
+}
+.container input{
+    background:none;
+    border: none;
+    color: #ffffff;
+    outline: 0;
+    border-bottom: 1px solid #ffffff;
+    display: inline-block;
+	width: 70%;
+	cursor: pointer;
+  	padding: 7px 10px;
+  	height: 30px;
+  	border: 0;
+	background: #8988a6;
+    border-radius: 3px;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
+}
+
+.datos input{
+    background:none;
+    border: none;
+    color: #000000;
+    outline: 0;
+    border-bottom: 1px solid #ffffff;
+    display: inline-block;
+	width: 70%;
+	cursor: pointer;
+  	padding: 7px 10px;
+  	height: 30px;
+  	border: 0;
+	background: #bfbef9;
+    border-radius: 3px;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
+    
+}
+
+
+.text{
+
+    color:#464369;
+
 }
