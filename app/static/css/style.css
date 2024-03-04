@@ -89,3 +89,44 @@ form label{
     color:#464369;
 
 }
+
+table {
+    text-align: center;
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;    
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
+   
+}
+
+
+ th{
+    
+   padding: 1%;
+   background-color: #464369;
+   border-bottom: 2px solid white;
+   text-shadow: 1px 1px 1px black;
+   font-size: 15px;
+   
+   
+}
+tr:hover{
+    background-color: #464369;
+
+}
+ td{
+    border-bottom: 2px solid white;
+    padding: 0.5%;
+    background-color: #8988a6;
+    text-shadow: 1px 1px 1px black;
+    font-size: 15px;
+}
+td:hover{
+
+    background-color: #464369;
+}
+.container .TT{
+    
+    text-align: center;
+}
