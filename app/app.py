@@ -39,7 +39,9 @@ def registrar_usuario():
         db.commit()
         flash('usuario creado correctamente','Sucess')
         return redirect(url_for('registrar_usuario'))
-        
+   
+
+
     return render_template("Registrar.html")
 
 @app.route("/editar/<int:id>", methods=["POST", "GET"])
@@ -68,7 +70,7 @@ def editar_usuario(id):
                 id,
             ),
         )
-        db.commit
+        db.commit()
 
         return redirect(url_for("lista"))
 
@@ -81,7 +83,15 @@ def editar_usuario(id):
 
 @app.route("/eliminar/<int:id>", methods=["GET"])
 def eliminar_usuario(id):
-    return redirect(url_for("lista"))
+    cursor = db.cursor()
+    if request.method == "GET":
+        cursor.execute(  "delete from  persona where ID_Persona=%s" , (id,))
+        db.commit()
+        return redirect(url_for("lista"))
+    
+
+   
+
 
 
 
