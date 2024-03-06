@@ -42,20 +42,49 @@ def registrar_usuario():
         
     return render_template("Registrar.html")
 
-@app.route('/editar', methods=['PUT','POST'])
-def registrar_usuario():
-    if request.method == 'PUT':
-        Nombres = request.form.put('p_Nombre')
-        Apellidos = request.form.put('p_Apellido')
-        Email = request.form.put('p_Email')
-        Direccion = request.form.put('p_Direccion')
-        Telefono = request.form.put('p_Telefono')
-        Usuario= request.form.put('p_Usuario')
-        
-        
- #insertar datos a la tabla persona
-    
-        cursor.execute("update persona (P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Contrasena))
+@app.route("/editar/<int:id>", methods=["POST", "GET"])
+def editar_usuario(id):
+    cursor = db.cursor()
+    if request.method == "POST":
+        nombreper = request.form.get("nombre")
+        apellidoper = request.form.get("apellido")
+        emailper = request.form.get("email")
+        dirreccionper = request.form.get("direccion")
+        telefonoper = request.form.get("telefono")
+        usuarioper = request.form.get("usuario")
+        contraper = request.form.get("contra")
+
+        sql = "update persona set p_nombre=%s, p_Apellido=%s,p_Email=%s,p_Direccion=%s, p_Telefono=%s,p_Usuario=%s, p_contraseña=%s where ID_Persona=%s"
+        cursor.execute(
+            sql,
+            (
+                nombreper,
+                apellidoper,
+                emailper,
+                dirreccionper,
+                telefonoper,
+                usuarioper,
+                contraper,
+                id,
+            ),
+        )
+        db.commit
+
+        return redirect(url_for("lista"))
+
+    else:
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM persona WHERE ID_Persona =%s", (id,))
+        data = cursor.fetchall()
+        return render_template("Editar.html", usuario=data[0])
+
+
+@app.route("/eliminar/<int:id>", methods=["GET"])
+def eliminar_usuario(id):
+    return redirect(url_for("lista"))
+
+
+
 
 
 if __name__ == '__main__':

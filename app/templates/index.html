@@ -18,6 +18,7 @@
                     <th>Dirección</th>
                     <th>Telefono </th>
                     <th>Usuario </th>
+                    <th>Acciones</th>
                     
 
 
@@ -33,7 +34,10 @@
                     <td>{{usuario[4]}}</td>
                     <td>{{usuario[5]}}</td>
                     <td>{{usuario[6]}}</td>
-                    
+                    <td>
+                        <a href="{{ url_for('editar_usuario', id=usuario[0]) }}">Editar</a>
+                        <a href="{{ url_for('eliminar_usuario', id=usuario[0]) }}">Eliminar</a>
+                    </td>
     
     
     
