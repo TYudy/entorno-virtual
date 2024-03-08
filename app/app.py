@@ -32,6 +32,7 @@ def registrar_usuario():
         Telefono = request.form.get('p_Telefono')
         Usuario= request.form.get('p_Usuario')
         Contrasena = request.form.get('p_Contrasena')
+<<<<<<< HEAD
 
 
         cursor.execute("SELECT * FROM persona WHERE p_Usuario = %s OR p_Email = %s", (Usuario, Email))
@@ -41,11 +42,18 @@ def registrar_usuario():
             flash("El usuario o correo electrónico ya existe.", "error")
             return redirect(url_for("registrar registrar_usuario"))
         
+=======
+    
+>>>>>>> 6fbed9edc9499c9c546fd55b883f1c51e4700de0
  #insertar datos a la tabla persona
     
         cursor.execute("INSERT INTO persona(P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Contrasena))
         db.commit()
+<<<<<<< HEAD
         
+=======
+        flash('usuario creado correctamente','Sucess')
+>>>>>>> 6fbed9edc9499c9c546fd55b883f1c51e4700de0
         return redirect(url_for('registrar_usuario'))
    
 
