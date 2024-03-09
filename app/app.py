@@ -43,13 +43,13 @@ def registrar_usuario():
             for v in existe:
 
                 if v [3] == Email and v[6] == Usuario:
-                    flash("El email y el usuario ya existe", "mensaje")
+                    flash("El email y el usuario ya existen.", "mensaje")
 
                 elif v[3] == Email:
-                    flash("El email ya existe", "me")
+                    flash("El email ya existe.", "me")
 
                 elif v[6] == Usuario:
-                    flash("El usuario ya existe", "mu")
+                    flash("El usuario ya existe.", "mu")
 
                 
             return redirect(url_for("registrar_usuario"))

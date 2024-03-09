@@ -11,6 +11,8 @@
 <body>
     <div class="container">
         <div class="text"><h1>SIGN IN</h1></div>
+
+        
     
         <form  method ='POST' action="/registrar">
             
@@ -26,7 +28,7 @@
                 <label for="email">Correo:</label>
                 <input type="email" id="email" name="p_Email"  required/>  
             {% for message in get_flashed_messages(category_filter=["me"])%}
-            <span class="flash-message">{{ message }}</span>
+            <span class="mensaje">{{ message }}</span>
             {% endfor %} 
                 </div>
             <div class="datos">
@@ -43,7 +45,7 @@
             <label for="usuario">Usuario:</label>
             <input type="text" id="Usuario" name="p_Usuario" value="" required /> 
             {% for message in get_flashed_messages(category_filter=["mu"]) %}
-            <span class="flash-message">{{ message }}</span>
+            <span class="mensaje">{{ message }}</span>
             {% endfor %} 
             </div>
             <div class="datos">
@@ -55,7 +57,7 @@
             
         </form>
         {% for message in get_flashed_messages(category_filter=["mensaje"]) %}
-            <span class="flash-message">{{ message }}</span>
+            <span class="mensaje-eu">{{ message }}</span>
             {% endfor %} 
       
     </div>
