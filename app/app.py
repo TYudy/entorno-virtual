@@ -2,6 +2,7 @@ from flask import Flask , flash, render_template,request,redirect,url_for
 import mysql.connector
 #Instancia
 app = Flask (__name__)
+app.secret_key = 'clave_secreta'
 db = mysql.connector.connect(
     host = "localhost",
     user = "root",
@@ -24,6 +25,7 @@ def lista():
 
 @app.route('/registrar', methods=['GET','POST'])
 def registrar_usuario():
+    cursor = db.cursor()
     if request.method == 'POST':
         Nombres = request.form.get('p_Nombre')
         Apellidos = request.form.get('p_Apellido')
@@ -35,23 +37,27 @@ def registrar_usuario():
 
 
         cursor.execute("SELECT * FROM persona WHERE p_Usuario = %s OR p_Email = %s", (Usuario, Email))
-        existing_user = cursor.fetchone()
+        existe = cursor.fetchall()
         
-        if existing_user:
-            flash("El usuario o correo electrónico ya existe.", "error")
-            return redirect(url_for("registrar registrar_usuario"))
-           
- #insertar datos a la tabla persona
-    
-        cursor.execute("INSERT INTO persona(P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Contrasena))
-        db.commit()
-        
-        flash('usuario creado correctamente','Sucess')
-        return redirect(url_for('registrar_usuario'))
-   
-   
+        if existe:
+            for v in existe:
 
+                if v [3] == Email and v[6] == Usuario:
+                    flash("El email y el usuario ya existe", "mensaje")
 
+                elif v[3] == Email:
+                    flash("El email ya existe", "me")
+
+                elif v[6] == Usuario:
+                    flash("El usuario ya existe", "mu")
+
+                
+            return redirect(url_for("registrar_usuario"))
+        else:
+            #insertar datos a la tabla persona
+            cursor.execute("INSERT INTO persona(P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Contrasena))
+            return redirect(url_for('registrar_usuario'))
+    db.commit()
     return render_template("Registrar.html")
 
 @app.route("/editar/<int:id>", methods=["POST", "GET"])

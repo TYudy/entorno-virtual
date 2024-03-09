@@ -21,27 +21,30 @@ body{
 .container{
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(2, 2, 2, 0.19);
     padding: 80px;
+    padding-top: 3%;
     
+    
+   
 }
 
 
 
 
-.container form{
+ form{
     display: grid;
     background-color: #5b5887;
     z-index: 10;
-    width: 60%;
+    width: 100%;
     justify-content: center;
     grid-template-columns: 40% 40%;
     padding: 50px;
     border-radius: 5px;
     box-shadow: 0 12px 16px 0 rgba(93, 68, 178, 0.24), 0 17px 50px 0 rgba(2, 2, 2, 0.19);
-    row-gap: 20px;
+    row-gap: 30px;
     
     }
 
-.container input:active{
+input:active{
     transform: translateY(2px);
 }
 form label{
@@ -50,14 +53,14 @@ form label{
 }
 
 
-.container input , button{
+input , button{
     background:none;
     border: none;
     color: #ffffff;
     outline: 0;
     border-bottom: 1px solid #ffffff;
     display: inline-block;
-	width: 70%;
+	width: 60%;
 	cursor: pointer;
   	padding: 7px 10px;
   	height: 30px;
@@ -74,7 +77,7 @@ form label{
     outline: 0;
     border-bottom: 1px solid #ffffff;
     display: inline-block;
-	width: 70%;
+	width: 65%;
 	cursor: pointer;
   	padding: 7px 10px;
   	height: 30px;
@@ -82,6 +85,7 @@ form label{
 	background: #bfbef9;
     border-radius: 3px;
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
+    
     
 }
 
@@ -113,7 +117,7 @@ table {
    
    
 }
-tr:hover{
+td:hover{
     background-color: #464369;
 
 }
@@ -123,12 +127,103 @@ tr:hover{
     background-color: #8988a6;
     text-shadow: 1px 1px 1px black;
     font-size: 15px;
+    
 }
-td:hover{
+
+td {
+    user-select: none;
+  }
+  td::selection {
+    background: none;
+  }
+  td::-moz-selection {
+    background: none;
+  }
+
+  th {
+    user-select: none;
+  }
+  th::selection {
+    background: none;
+  }
+  th::-moz-selection {
+    background: none;
+  }
+
+
+
+
+tbody:hover{
 
     background-color: #464369;
 }
-.container .TT{
+.TT{
     
     text-align: center;
+    font: 500 2em/1 monospace;
+    letter-spacing: 0;
+    padding: .25em 0 .325em;
+    display: block;
+    margin: 0 auto;
+    text-shadow: 0 0 80px rgba(255,255,255,.5);
+
+    background: url('/static/img/Patron.png') repeat-y;
+    -webkit-background-clip: text;
+    background-clip: text;
+
+
+
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: aitf 80s linear infinite;
+
+
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+}
+
+.flash-message{
+
+    text-shadow: 1px 1px 1px black;
+    display: block;
+    
+}
+a{
+    text-decoration: none;
+    color: #ffffff;
+}
+a:visited{
+    color: #ffffff;
+}
+a:hover{
+
+    background-color: #bfbef9;
+
+}
+.text{
+
+    font: 500 2em/1 monospace;
+    letter-spacing: 0;
+    padding: .25em 0 .325em;
+    display: block;
+    margin: 0 auto;
+    text-shadow: 0 0 80px rgba(255,255,255,.5);
+
+    background: url('/static/img/Patron.png') repeat-y;
+    -webkit-background-clip: text;
+    background-clip: text;
+
+
+
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: aitf 80s linear infinite;
+
+
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+
+}
+
+@-webkit-keyframes aitf {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
