@@ -1,5 +1,6 @@
 from flask import Flask , flash, render_template,request,redirect,url_for
 import mysql.connector
+import bcrypt
 #Instancia
 app = Flask (__name__)
 app.secret_key = 'clave_secreta'
@@ -14,6 +15,9 @@ db = mysql.connector.connect(
 cursor = db.cursor()
 #Para ejecutar
 @app.route('/')
+
+
+
 def lista():
     cursor = db.cursor()
     cursor.execute('SELECT * FROM persona')
@@ -21,6 +25,7 @@ def lista():
     return render_template('index.html', persona = usuario)
 
 @app.route('/registrar', methods=['GET','POST'])
+
 def registrar_usuario():
     cursor = db.cursor()
     if request.method == 'POST':
@@ -31,6 +36,7 @@ def registrar_usuario():
         Telefono = request.form.get('p_Telefono')
         Usuario= request.form.get('p_Usuario')
         Contrasena = request.form.get('p_Contrasena')
+        Cencriptada = encriptarcontra(Contrasena)
 
 
         cursor.execute("SELECT * FROM persona WHERE p_Usuario = %s OR p_Email = %s", (Usuario, Email))
@@ -52,7 +58,7 @@ def registrar_usuario():
             return redirect(url_for("registrar_usuario"))
         else:
             #insertar datos a la tabla persona
-            cursor.execute("INSERT INTO persona(P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Contrasena))
+            cursor.execute("INSERT INTO persona(P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Cencriptada))
             return redirect(url_for('registrar_usuario'))
     db.commit()
     return render_template("Registrar.html")
@@ -103,13 +109,15 @@ def eliminar_usuario(id):
         return redirect(url_for("lista"))
     
 
-@app.route("/se")
+@app.route("/sesion", methods=["GET"])
 def sesion():
     return render_template("Login.html")
     
     
-#@app.route("/sesion/<int:id>", methods=["GET"])
-
+def encriptarcontra(contraencrip):
+    #Generar un hash(encriptado) de la contraseña
+    encriptar = bcrypt.hashpw(contraencrip.encode('utf-8'),bcrypt.getsalt())
+    return encriptar
 
 
 
