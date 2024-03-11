@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log in</title>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/login.css')}}">
     
 
 
@@ -13,15 +13,15 @@
     <div class="container">
         <div class="text"><h1>LOG IN</h1></div>
     
-        <form >
+        <form action="/" method="get">
             
             <div class="datos">
             <label for="usuario">Usuario:</label>
-            <input type="text" id="Usuario" name="usuario"   />  
+            <input type="text" id="Usuario" name="usuariol"   />  
             </div>
             <div class="datos">
             <label for="name">Contraseña:</label>
-            <input type="password" id="contraseña" name="contra"  />   
+            <input type="password" id="contraseña" name="contral"  />   
             </div>
             
             <button type="submit">Actualizar</button>

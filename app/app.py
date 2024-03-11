@@ -1,4 +1,4 @@
-from flask import Flask , flash, render_template,request,redirect,url_for
+from flask import Flask , flash, render_template,request,redirect,url_for, session
 import mysql.connector
 import bcrypt
 #Instancia
@@ -22,7 +22,7 @@ def lista():
     cursor = db.cursor()
     cursor.execute('SELECT * FROM persona')
     usuario = cursor.fetchall()
-    return render_template('index.html', persona = usuario)
+    return render_template('Lista.html', persona = usuario)
 
 @app.route('/registrar', methods=['GET','POST'])
 
@@ -109,17 +109,31 @@ def eliminar_usuario(id):
         return redirect(url_for("lista"))
     
 
-@app.route("/sesion", methods=["GET"])
-def sesion():
-    return render_template("Login.html")
-    
+
     
 def encriptarcontra(contraencrip):
     #Generar un hash(encriptado) de la contraseña
-    encriptar = bcrypt.hashpw(contraencrip.encode('utf-8'),bcrypt.getsalt())
+    encriptar = bcrypt.hashpw(contraencrip.encode('utf-8'),bcrypt.gensalt())
     return encriptar
 
+@app.route("/login", methods=['GET','POST'])
+def login():
+    cursor = db.cursor()
+    if request.method == 'POST':
+     #Verificar credenciales
+     username = request.form.get('Usuariol')
+     password = request.form.get('contral')
+     cursor.execute ('SELECT p_Usuario, p_Contraseña FROM persona where username = %s ',(username,))
+     usuarios = cursor.fetchone()
 
+     if usuarios and bcrypt.check_password_hash(usuarios[6],password):
+        session['usuario'] = username
+        return redirect (url_for ('Lista'))
+     else:
+         error = 'Credenciales invalidas. Por favor intentarlo de nuevo'
+         return render_template('Login.html',error=error)
+    return render_template('Login.html')
+    
 
 
 if __name__ == '__main__':
