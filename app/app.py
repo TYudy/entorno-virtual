@@ -14,9 +14,6 @@ db = mysql.connector.connect(
 cursor = db.cursor()
 #Para ejecutar
 @app.route('/')
-
-
-
 def lista():
     cursor = db.cursor()
     cursor.execute('SELECT * FROM persona')
@@ -106,8 +103,12 @@ def eliminar_usuario(id):
         return redirect(url_for("lista"))
     
 
-   
-
+@app.route("/se")
+def sesion():
+    return render_template("Login.html")
+    
+    
+#@app.route("/sesion/<int:id>", methods=["GET"])
 
 
 
