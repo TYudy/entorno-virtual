@@ -1,6 +1,7 @@
 from flask import Flask , flash, render_template,request,redirect,url_for, session
 import mysql.connector
-import bcrypt
+from werkzeug.security import generate_password_hash,check_password_hash
+#import bcrypt
 #Instancia
 app = Flask (__name__)
 app.secret_key = 'clave_secreta'
@@ -36,7 +37,7 @@ def registrar_usuario():
         Telefono = request.form.get('p_Telefono')
         Usuario= request.form.get('p_Usuario')
         Contrasena = request.form.get('p_Contrasena')
-        Cencriptada = encriptarcontra(Contrasena)
+        Cencriptada = check_password_hash(Contrasena)
 
 
         cursor.execute("SELECT * FROM persona WHERE p_Usuario = %s OR p_Email = %s", (Usuario, Email))
@@ -110,32 +111,45 @@ def eliminar_usuario(id):
     
 
 
-    
+@app.route('/password/<contraencrip>')    
 def encriptarcontra(contraencrip):
     #Generar un hash(encriptado) de la contraseña
-    encriptar = bcrypt.hashpw(contraencrip.encode('utf-8'),bcrypt.gensalt())
+    #encriptar = bcrypt.hashpw(contraencrip.encode('utf-8'),bcrypt.gensalt())
+    encriptar = generate_password_hash(contraencrip)
+    #valor = check_password_hash(encriptar,contraencrip)
+
+    #return "Encriptado:{0} | coincide: {1}".format(encriptar,valor)
     return encriptar
+
+
+
+
+
 
 @app.route("/login", methods=['GET','POST'])
 def login():
     cursor = db.cursor()
     if request.method == 'POST':
      #Verificar credenciales
-     username = request.form.get('Usuariol')
-     password = request.form.get('contral')
-     cursor.execute ('SELECT p_Usuario, p_Contraseña FROM persona where username = %s ',(username,))
-     usuarios = cursor.fetchone()
 
-     if usuarios and bcrypt.check_password_hash(usuarios[6],password):
+     username = request.form.get('Usuariol')
+     password = request.form.get('Contral')
+     cursor.execute ("SELECT p_Usuario, p_Contraseña FROM persona where p_Usuario = %s ",(username,))
+     resultado = cursor.fetchone()
+    
+     if resultado and check_password_hash(password) == resultado[1]:
         session['usuario'] = username
-        return redirect (url_for ('Lista'))
+        return redirect (url_for ('lista'))
+        
      else:
-         error = 'Credenciales invalidas. Por favor intentarlo de nuevo'
-         return render_template('Login.html',error=error)
+        
+        error = 'Credenciales invalidas. Por favor intentarlo de nuevo'
+        return render_template('Login.html',error=error)
+     
     return render_template('Login.html')
     
-
-
+    
+    
 if __name__ == '__main__':
     app.add_url_rule('/', view_func=lista)
     app.run(debug = True, port=5000)
