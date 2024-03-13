@@ -53,7 +53,7 @@ form label{
 }
 
 
-input , button{
+ button{
     background:none;
     border: none;
     color: #ffffff;
@@ -70,7 +70,7 @@ input , button{
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
 }
 
-.datos input{
+input{
     background:none;
     border: none;
     color: #000000;

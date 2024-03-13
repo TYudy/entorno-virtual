@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="TT"><h1>USERS</h1></div>
+        <div class="TT"><h1>Welcome User {{session['usuario']}}</h1></div>
         <table>
             <tr>
                     <th>Codigo </th>
@@ -46,10 +46,13 @@
     
                 </tr>
                 {%endfor%}
+
+                
     
             </tbody>
         </table>
-       
+        <button class=""><a href="{{ url_for('registrar_usuario') }}">Agregar usuario</a></button>
+        <button class=""><a href="/logout">Cerrar sesión</a></button>
     </div>
     
     

@@ -16,9 +16,6 @@ db = mysql.connector.connect(
 cursor = db.cursor()
 #Para ejecutar
 @app.route('/')
-
-
-
 def lista():
     cursor = db.cursor()
     cursor.execute('SELECT * FROM persona')
@@ -37,7 +34,7 @@ def registrar_usuario():
         Telefono = request.form.get('p_Telefono')
         Usuario= request.form.get('p_Usuario')
         Contrasena = request.form.get('p_Contrasena')
-        Cencriptada = check_password_hash(Contrasena)
+        Cencriptada = generate_password_hash(Contrasena)
 
 
         cursor.execute("SELECT * FROM persona WHERE p_Usuario = %s OR p_Email = %s", (Usuario, Email))
@@ -116,10 +113,10 @@ def encriptarcontra(contraencrip):
     #Generar un hash(encriptado) de la contraseña
     #encriptar = bcrypt.hashpw(contraencrip.encode('utf-8'),bcrypt.gensalt())
     encriptar = generate_password_hash(contraencrip)
-    #valor = check_password_hash(encriptar,contraencrip)
+    valor = check_password_hash(encriptar,contraencrip)
 
     #return "Encriptado:{0} | coincide: {1}".format(encriptar,valor)
-    return encriptar
+    return valor
 
 
 
@@ -137,7 +134,7 @@ def login():
      cursor.execute ("SELECT p_Usuario, p_Contraseña FROM persona where p_Usuario = %s ",(username,))
      resultado = cursor.fetchone()
     
-     if resultado and check_password_hash(password) == resultado[1]:
+     if resultado and check_password_hash(resultado[1], password ):
         session['usuario'] = username
         return redirect (url_for ('lista'))
         
@@ -147,7 +144,65 @@ def login():
         return render_template('Login.html',error=error)
      
     return render_template('Login.html')
+
+@app.route("/logout")
+def logaout():
+    session.pop('usuario',None)
+    print("Sesión finalizada")
+    return redirect(url_for('login'))    
     
+@app.route("/a_cancion")
+def t_song():
+    cursor = db.cursor()
+    if request.method == 'POST':
+        Titulo = request.method.get('title')
+        Artista = request.method.get('artist')
+        Genero = request.method.get('genre')
+        Precio = request.method.get('price')
+        Duracion = request.method.get('duration')
+    return render_template('C_add.html')
+
+
+@app.route("/t_cancion")
+def add_song():
+    cursor = db.cursor()
+    if request.method == 'POST':
+        Nombres = request.form.get('p_Nombre')
+        Apellidos = request.form.get('p_Apellido')
+        Email = request.form.get('p_Email')
+        Direccion = request.form.get('p_Direccion')
+        Telefono = request.form.get('p_Telefono')
+        Usuario= request.form.get('p_Usuario')
+        Contrasena = request.form.get('p_Contrasena')
+        Cencriptada = generate_password_hash(Contrasena)
+
+
+        cursor.execute("SELECT * FROM persona WHERE p_Usuario = %s OR p_Email = %s", (Usuario, Email))
+        existe = cursor.fetchall()
+        
+        if existe:
+            for v in existe:
+
+                if v [3] == Email and v[6] == Usuario:
+                    flash("El email y el usuario ya existen.", "mensaje")
+
+                elif v[3] == Email:
+                    flash("El email ya existe.", "me")
+
+                elif v[6] == Usuario:
+                    flash("El usuario ya existe.", "mu")
+
+            
+            return redirect(url_for("registrar_usuario"))
+        else:
+            #insertar datos a la tabla persona
+            cursor.execute("INSERT INTO persona(P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Cencriptada))
+            return redirect(url_for('registrar_usuario'))
+        
+    db.commit()
+    return render_template("Registrar.html")
+
+
     
     
 if __name__ == '__main__':
