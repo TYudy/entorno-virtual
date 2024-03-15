@@ -184,6 +184,14 @@ def list_song():
     return render_template("C_lista.html", canciones = cancion)
     
 
+@app.route("/d_cancion/<int:id>", methods=["GET"])
+def delete_song(id):
+    cursor = db.cursor()
+    if request.method == "GET":
+        cursor.execute( "delete from canciones where ID_Cancion=%s" , (id,))
+        db.commit()
+        return redirect(url_for("list_song"))
+
 
     
 if __name__ == '__main__':
