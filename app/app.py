@@ -1,6 +1,10 @@
 from flask import Flask , flash, render_template,request,redirect,url_for, session
 import mysql.connector
 from werkzeug.security import generate_password_hash,check_password_hash
+import base64
+
+
+
 #import bcrypt
 #Instancia
 app = Flask (__name__)
@@ -151,59 +155,36 @@ def logaout():
     print("Sesión finalizada")
     return redirect(url_for('login'))    
     
-@app.route("/a_cancion")
-def t_song():
-    cursor = db.cursor()
-    if request.method == 'POST':
-        Titulo = request.method.get('title')
-        Artista = request.method.get('artist')
-        Genero = request.method.get('genre')
-        Precio = request.method.get('price')
-        Duracion = request.method.get('duration')
-    return render_template('C_add.html')
-
-
-@app.route("/t_cancion")
+@app.route("/a_cancion", methods =['GET', 'POST'])
 def add_song():
     cursor = db.cursor()
     if request.method == 'POST':
-        Nombres = request.form.get('p_Nombre')
-        Apellidos = request.form.get('p_Apellido')
-        Email = request.form.get('p_Email')
-        Direccion = request.form.get('p_Direccion')
-        Telefono = request.form.get('p_Telefono')
-        Usuario= request.form.get('p_Usuario')
-        Contrasena = request.form.get('p_Contrasena')
-        Cencriptada = generate_password_hash(Contrasena)
+        Titulo = request.form.get('title')  
+        Artista = request.form.get('artist')
+        Genero = request.form.get('genre')
+        Precio = request.form.get('price')
+        Duracion = request.form.get('duration')
+        Fecha = request.form.get('date')
+        Imagen = request.form.get('image')
 
 
-        cursor.execute("SELECT * FROM persona WHERE p_Usuario = %s OR p_Email = %s", (Usuario, Email))
-        existe = cursor.fetchall()
-        
-        if existe:
-            for v in existe:
 
-                if v [3] == Email and v[6] == Usuario:
-                    flash("El email y el usuario ya existen.", "mensaje")
-
-                elif v[3] == Email:
-                    flash("El email ya existe.", "me")
-
-                elif v[6] == Usuario:
-                    flash("El usuario ya existe.", "mu")
-
-            
-            return redirect(url_for("registrar_usuario"))
-        else:
-            #insertar datos a la tabla persona
-            cursor.execute("INSERT INTO persona(P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Cencriptada))
-            return redirect(url_for('registrar_usuario'))
-        
+        cursor.execute("INSERT INTO canciones (Titulo, Artista, Genero, Precio, Duracion, A_Lanzamiento,img)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Titulo,Artista,Genero,Precio,Duracion,Fecha,Imagen))
+        return redirect(url_for('add_song'))
     db.commit()
-    return render_template("Registrar.html")
-
-
+    return render_template("C_add.html")
     
+
+
+@app.route("/l_cancion")
+def list_song():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM canciones")
+    cancion = cursor.fetchall()
+    return render_template("C_lista.html", canciones = cancion)
+    
+
+
     
 if __name__ == '__main__':
     app.add_url_rule('/', view_func=lista)
