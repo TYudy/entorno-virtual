@@ -1,7 +1,7 @@
 from flask import Flask , flash, render_template,request,redirect,url_for, session
 import mysql.connector
 from werkzeug.security import generate_password_hash,check_password_hash
-import base64
+from PIL import Image 
 
 
 
@@ -27,7 +27,6 @@ def lista():
     return render_template('Lista.html', persona = usuario)
 
 @app.route('/registrar', methods=['GET','POST'])
-
 def registrar_usuario():
     cursor = db.cursor()
     if request.method == 'POST':
@@ -173,7 +172,6 @@ def add_song():
         return redirect(url_for('add_song'))
     db.commit()
     return render_template("C_add.html")
-    
 
 
 @app.route("/l_cancion")
@@ -184,6 +182,8 @@ def list_song():
     return render_template("C_lista.html", canciones = cancion)
     
 
+    
+
 @app.route("/d_cancion/<int:id>", methods=["GET"])
 def delete_song(id):
     cursor = db.cursor()
@@ -191,6 +191,30 @@ def delete_song(id):
         cursor.execute( "delete from canciones where ID_Cancion=%s" , (id,))
         db.commit()
         return redirect(url_for("list_song"))
+    
+
+
+@app.route("/u_cancion/<int:id>", methods=["POST", "GET"])
+def update_song(id):
+    cursor = db.cursor()
+    if request.method == "POST":
+        Titulou = request.form.get('t')  
+        Artistau = request.form.get('a')
+        Generou = request.form.get('g')
+        Preciou = request.form.get('p')
+        Duracionu = request.form.get('d')
+        Fechau = request.form.get('da')
+        Imagenu = request.form.get('im')
+
+        cursor.execute("update canciones set Titulo=%s, Artista=%s, Genero=%s, Precio=%s, Duracion=%s, A_Lanzamiento=%s,img=%s where ID_Cancion=%s",(Titulou,Artistau,Generou,Preciou,Duracionu,Fechau,Imagenu,id))
+        db.commit()
+        return redirect(url_for('list_song'))
+    else:
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM canciones WHERE ID_Cancion =%s", (id,))
+        data = cursor.fetchall()
+        return render_template("C_update.html", cancion=data[0])
+
 
 
     
