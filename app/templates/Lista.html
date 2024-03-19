@@ -9,7 +9,18 @@
 
     
 </head>
+<nav>
+    <ul >
+        <li >
+            <a href="{{ url_for('registrar_usuario') }}">Agregar usuario</a></button>
+        </li>
+        <li>
+            <a href="/logout">Cerrar sesión</a></button>
+        </li>
+    </ul>
+</nav>
 <body>
+    
     <div class="container">
         <div class="TT"><h1>Welcome User {{session['usuario']}}</h1></div>
         <table>
@@ -21,6 +32,7 @@
                     <th>Dirección</th>
                     <th>Telefono </th>
                     <th>Usuario </th>
+                    <th>Rol</th>
                     <th>Acciones</th>
                     
 
@@ -37,6 +49,7 @@
                     <td>{{usuario[4]}}</td>
                     <td>{{usuario[5]}}</td>
                     <td>{{usuario[6]}}</td>
+                    <td>{{usuario[8]}}</td>
                     <td>
                         <a href="{{ url_for('editar_usuario', id=usuario[0]) }}">Editar</a>
                         <a href="{{ url_for('eliminar_usuario', id=usuario[0]) }}">Eliminar</a>
@@ -51,8 +64,7 @@
     
             </tbody>
         </table>
-        <button class=""><a href="{{ url_for('registrar_usuario') }}">Agregar usuario</a></button>
-        <button class=""><a href="/logout">Cerrar sesión</a></button>
+        
     </div>
     
     

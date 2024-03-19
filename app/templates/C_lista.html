@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=
     , initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/style.css')}}">
+    <link rel="icon" href="{{ url_for('static', filename='img/Flecha.png') }}" type="image/x-icon">
+    
 </head>
 <body>
     <table>
@@ -18,6 +21,7 @@
             <th>Duración </th>
             <th>Fecha</th>
             <th></th>
+            <th></th>
 
         </tr>
         <tbody>
@@ -30,7 +34,7 @@
                 <td>{{cancion[4]}}</td>
                 <td>{{cancion[5]}}</td>
                 <td>{{cancion[6]}}</td>
-                <!--<td><img  alt="Portada de {{cancion[1]}}" style="width: auto;">{{cancion[7]}}</td>-->
+                <td><img  alt="Portada de {{cancion[1]}}" style="width: auto;">{{cancion[7]}}</td>
                 <td>
                     <a href="{{ url_for('delete_song', id=cancion[0]) }}">Eliminar</a>
                     <a href="{{ url_for ('update_song', id=cancion[0]) }}">Editar</a>

@@ -19,7 +19,7 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 #Para ejecutar
-@app.route('/')
+@app.route('/lista')
 def lista():
     cursor = db.cursor()
     cursor.execute('SELECT * FROM persona')
@@ -38,6 +38,7 @@ def registrar_usuario():
         Usuario= request.form.get('p_Usuario')
         Contrasena = request.form.get('p_Contrasena')
         Cencriptada = generate_password_hash(Contrasena)
+        roles = request.form.get('txtrol')
 
 
         cursor.execute("SELECT * FROM persona WHERE p_Usuario = %s OR p_Email = %s", (Usuario, Email))
@@ -59,7 +60,7 @@ def registrar_usuario():
             return redirect(url_for("registrar_usuario"))
         else:
             #insertar datos a la tabla persona
-            cursor.execute("INSERT INTO persona(P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Cencriptada))
+            cursor.execute("INSERT INTO persona(P_Nombre, p_Apellido, p_Email, p_Direccion, p_Telefono, p_Usuario, p_Contraseña,Roles)VALUES(%s,%s,%s,%s,%s,%s,%s,%s)",(Nombres, Apellidos, Email, Direccion, Telefono, Usuario, Cencriptada,roles))
             return redirect(url_for('registrar_usuario'))
     db.commit()
     return render_template("Registrar.html")
@@ -128,18 +129,25 @@ def encriptarcontra(contraencrip):
 
 @app.route("/login", methods=['GET','POST'])
 def login():
-    cursor = db.cursor()
+    cursor = db.cursor(dictionary=True)
     if request.method == 'POST':
      #Verificar credenciales
 
      username = request.form.get('Usuariol')
      password = request.form.get('Contral')
-     cursor.execute ("SELECT p_Usuario, p_Contraseña FROM persona where p_Usuario = %s ",(username,))
-     resultado = cursor.fetchone()
+     sql = "SELECT p_Usuario, p_Contraseña,Roles FROM persona where p_Usuario = %s "
+     cursor.execute(sql,(username,))
+     user = cursor.fetchone()
     
-     if resultado and check_password_hash(resultado[1], password ):
-        session['usuario'] = username
-        return redirect (url_for ('lista'))
+     if user and check_password_hash(user['p_Contraseña'], password ):
+        session['usuario'] = user ['p_Usuario']
+        session['rol'] = user['Roles']
+        # De acuerdo al rol asignamos la url 
+        if user['Roles'] == 'Administrador':
+            return redirect (url_for ('lista'))
+        else:
+            return redirect (url_for ('list_song'))
+
         
      else:
         
@@ -219,7 +227,7 @@ def update_song(id):
 
     
 if __name__ == '__main__':
-    app.add_url_rule('/', view_func=lista)
+    app.add_url_rule('/', view_func=login)
     app.run(debug = True, port=5000)
 #Rutas
     
