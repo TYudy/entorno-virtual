@@ -2,6 +2,7 @@ from flask import Flask , flash, render_template,request,redirect,url_for, sessi
 import mysql.connector
 from werkzeug.security import generate_password_hash,check_password_hash
 from PIL import Image 
+import base64
 
 
 
@@ -172,11 +173,18 @@ def add_song():
         Precio = request.form.get('price')
         Duracion = request.form.get('duration')
         Fecha = request.form.get('date')
-        Imagen = request.form.get('image')
+        Imagen = request.files['image']
+        imagenb = Imagen.read()
+
+        #cursor.execute("select * from canciones where Titulo = %s"(Titulo))
+        #existing_canciones = cursor.fetchone()
+        #if existing_canciones:
+         #   return render_template('C_add.html')
 
 
 
-        cursor.execute("INSERT INTO canciones (Titulo, Artista, Genero, Precio, Duracion, A_Lanzamiento,img)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Titulo,Artista,Genero,Precio,Duracion,Fecha,Imagen))
+        cursor.execute("INSERT INTO canciones (Titulo, Artista, Genero, Precio, Duracion, A_Lanzamiento,img)VALUES(%s,%s,%s,%s,%s,%s,%s)",(Titulo,Artista,Genero,Precio,Duracion,Fecha,imagenb))
+        print(Imagen)
         return redirect(url_for('add_song'))
     db.commit()
     return render_template("C_add.html")
@@ -185,9 +193,38 @@ def add_song():
 @app.route("/l_cancion")
 def list_song():
     cursor = db.cursor()
+    cursor.execute("SELECT Titulo, Artista, Genero, Precio, Duracion, A_Lanzamiento,img FROM canciones")
+    canciones = cursor.fetchall()
+
+
+    if canciones:
+        cancioneslist = []
+        for cancion in canciones:
+            imagen = base64.b64encode(cancion[6]).decode('utf-8')
+            cancioneslist.append({
+                'Titulo':cancion[0],
+                'Artista':cancion[1],
+                'Genero':cancion[2],
+                'Precio':cancion[3],
+                'Duracion':cancion[4],
+                'A_Lanzamiento':cancion[5],
+                'imagen':imagen
+
+
+
+
+            })
+        return render_template("C_lista.html", canciones = cancioneslist)
+    else:
+        return print("canciones no encontradas")
+    
+
+@app.route("/lc_cancion")
+def listc_song():
+    cursor = db.cursor()
     cursor.execute("SELECT * FROM canciones")
     cancion = cursor.fetchall()
-    return render_template("C_lista.html", canciones = cancion)
+    return render_template("C_listac.html", canciones = cancion)
     
 
     

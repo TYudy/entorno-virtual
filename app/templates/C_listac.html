@@ -11,19 +11,18 @@
 </head>
 <body>
     <table>
-        <thead>
+        <div class="TT"><h1>Welcome User {{session['usuario']}}</h1></div>
+
         <tr>
+            <th>Codigo</th>
             <th>Titulo</th>
             <th>Artista</th>
             <th>Genero</th>
             <th>Precio</th>
             <th>Duración </th>
             <th>Fecha</th>
-            <th>Portada</th>
-            <th>Acciones</th>
-
+            
         </tr>
-        </thead>
         <tbody>
             {% for cancion in canciones %}
             <tr>
@@ -33,11 +32,9 @@
                 <td>{{cancion[3]}}</td>
                 <td>{{cancion[4]}}</td>
                 <td>{{cancion[5]}}</td>
-                <td><img  src="data:image/jpeg;base64,{{cancion.imagen}}" alt="Portada de {{cancion[0]}}" style="width: auto;">{{cancion[6]}}</td>
-                <td>
-                    <a href="{{ url_for('delete_song', id=cancion[0]) }}">Eliminar</a>
-                    <a href="{{ url_for ('update_song', id=cancion[0]) }}">Editar</a>
-                </td>
+                <td>{{cancion[6]}}</td>
+                <!--<td><img  alt="Portada de {{cancion[1]}}" style="width: auto;">{{cancion[7]}}</td>-->
+                
             </tr>
             {%endfor%}
         </tbody>
