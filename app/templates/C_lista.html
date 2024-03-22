@@ -27,16 +27,17 @@
         <tbody>
             {% for cancion in canciones %}
             <tr>
-                <td>{{cancion[0]}}</td>
-                <td>{{cancion[1]}}</td>
-                <td>{{cancion[2]}}</td>
-                <td>{{cancion[3]}}</td>
-                <td>{{cancion[4]}}</td>
-                <td>{{cancion[5]}}</td>
-                <td><img  src="data:image/jpeg;base64,{{cancion.imagen}}" alt="Portada de {{cancion[0]}}" style="width: auto;">{{cancion[6]}}</td>
+                <td>{{cancion.ID_Cancion}}</td>
+                <td>{{cancion.Titulo}}</td>
+                <td>{{cancion.Artista}}</td>
+                <td>{{cancion.Genero}}</td>
+                <td>{{cancion.Precio}}</td>
+                <td>{{cancion.Duracion}}</td>
+                <td>{{cancion.A_Lanzamiento}}</td>
+                <td><img  src="data:image/jpeg;base64,{{cancion.img}}" alt="Portada de {{cancion[1]}}" style="width: 100px;"></td>
                 <td>
-                    <a href="{{ url_for('delete_song', id=cancion[0]) }}">Eliminar</a>
-                    <a href="{{ url_for ('update_song', id=cancion[0]) }}">Editar</a>
+                    <a href="{{ url_for('delete_song', id=cancion.ID_Cancion) }}">Eliminar</a>
+                    <a href="{{ url_for ('update_song', id=cancion.ID_Cancion) }}">Editar</a>
                 </td>
             </tr>
             {%endfor%}

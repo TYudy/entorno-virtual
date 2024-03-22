@@ -193,27 +193,25 @@ def add_song():
 @app.route("/l_cancion")
 def list_song():
     cursor = db.cursor()
-    cursor.execute("SELECT Titulo, Artista, Genero, Precio, Duracion, A_Lanzamiento,img FROM canciones")
+    cursor.execute("SELECT ID_Cancion,Titulo, Artista, Genero, Precio, Duracion, A_Lanzamiento,img FROM canciones")
     canciones = cursor.fetchall()
 
 
     if canciones:
         cancioneslist = []
         for cancion in canciones:
-            imagen = base64.b64encode(cancion[6]).decode('utf-8')
+            imagen = base64.b64encode(cancion[7]).decode('utf-8')
             cancioneslist.append({
-                'Titulo':cancion[0],
-                'Artista':cancion[1],
-                'Genero':cancion[2],
-                'Precio':cancion[3],
-                'Duracion':cancion[4],
-                'A_Lanzamiento':cancion[5],
-                'imagen':imagen
-
-
-
-
-            })
+                'ID_Cancion':cancion[0],
+                'Titulo':cancion[1],
+                'Artista':cancion[2],
+                'Genero':cancion[3],
+                'Precio':cancion[4],
+                'Duracion':cancion[5],
+                'A_Lanzamiento':cancion[6],
+                'img':imagen
+                })
+            
         return render_template("C_lista.html", canciones = cancioneslist)
     else:
         return print("canciones no encontradas")
