@@ -228,7 +228,7 @@ def listc_song():
     if canciones:
         cancioneslist = []
         for cancion in canciones:
-            imagen = base64.b64encode(cancion[7]).decode('utf-8')
+            imagen = base64.b64encode(cancion[7]).decode('utf-8') 
             cancioneslist.append({
                 'ID_Cancion':cancion[0],
                 'Titulo':cancion[1],
@@ -242,7 +242,9 @@ def listc_song():
             
         return render_template("C_listac.html", canciones = cancioneslist)
     else:
-        return print("canciones no encontradas")
+        return render_template("C_listac.html")
+       
+        
 
     
 

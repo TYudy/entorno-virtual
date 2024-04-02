@@ -93,7 +93,7 @@ header ul li:hover{
 }
   
 .TT{
-    
+    width: 100%;
     text-align: center;
     font: 500 2em/1 monospace;
     letter-spacing: 0;
@@ -130,7 +130,7 @@ header ul li:hover{
   
   .container .card{
     position: relative;
-    margin: 12px;
+    padding: 10px;
   }
   
   .container .card .face{
