@@ -10,9 +10,15 @@
     
 </head>
 <body>
+    
+    <div class="container">
+        
+        <a href="{{ url_for('lista') }}" class="btn"><button>Volver</button></a>
+        <div class="TT"><h1>Songs</h1></div>
     <table>
         <thead>
         <tr>
+            <th>Codigo</th>
             <th>Titulo</th>
             <th>Artista</th>
             <th>Genero</th>
@@ -34,7 +40,7 @@
                 <td>{{cancion.Precio}}</td>
                 <td>{{cancion.Duracion}}</td>
                 <td>{{cancion.A_Lanzamiento}}</td>
-                <td><img  src="data:image/jpeg;base64,{{cancion.img}}" alt="Portada de {{cancion[1]}}" style="width: 100px;"></td>
+                <td><img  src="data:image/jpeg;base64,{{cancion.img}}" alt="Portada de {{cancion.Titulo}}" style="width: 100px;"></td>
                 <td>
                     <a href="{{ url_for('delete_song', id=cancion.ID_Cancion) }}">Eliminar</a>
                     <a href="{{ url_for ('update_song', id=cancion.ID_Cancion) }}">Editar</a>
@@ -44,6 +50,7 @@
         </tbody>
 
     </table>
+    </div>
     
 </body>
 </html>

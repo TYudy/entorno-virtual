@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from PIL import Image 
 import base64
 
+from datetime import datetime
 
 
 #import bcrypt
@@ -147,7 +148,7 @@ def login():
         if user['Roles'] == 'Administrador':
             return redirect (url_for ('lista'))
         else:
-            return redirect (url_for ('list_song'))
+            return redirect (url_for ('listc_song'))
 
         
      else:
@@ -158,7 +159,7 @@ def login():
     return render_template('Login.html')
 
 @app.route("/logout")
-def logaout():
+def logout():
     session.pop('usuario',None)
     print("Sesión finalizada")
     return redirect(url_for('login'))    
@@ -220,10 +221,28 @@ def list_song():
 @app.route("/lc_cancion")
 def listc_song():
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM canciones")
-    cancion = cursor.fetchall()
-    return render_template("C_listac.html", canciones = cancion)
-    
+    cursor.execute("SELECT ID_Cancion,Titulo, Artista, Genero, Precio, Duracion, A_Lanzamiento,img FROM canciones")
+    canciones = cursor.fetchall()
+
+
+    if canciones:
+        cancioneslist = []
+        for cancion in canciones:
+            imagen = base64.b64encode(cancion[7]).decode('utf-8')
+            cancioneslist.append({
+                'ID_Cancion':cancion[0],
+                'Titulo':cancion[1],
+                'Artista':cancion[2],
+                'Genero':cancion[3],
+                'Precio':cancion[4],
+                'Duracion':cancion[5],
+                'A_Lanzamiento':cancion[6],
+                'img':imagen
+                })
+            
+        return render_template("C_listac.html", canciones = cancioneslist)
+    else:
+        return print("canciones no encontradas")
 
     
 
@@ -247,9 +266,11 @@ def update_song(id):
         Preciou = request.form.get('p')
         Duracionu = request.form.get('d')
         Fechau = request.form.get('da')
-        Imagenu = request.form.get('im')
+        Imagen = request.files['im']
+        imagenb = Imagen.read()
+        
 
-        cursor.execute("update canciones set Titulo=%s, Artista=%s, Genero=%s, Precio=%s, Duracion=%s, A_Lanzamiento=%s,img=%s where ID_Cancion=%s",(Titulou,Artistau,Generou,Preciou,Duracionu,Fechau,Imagenu,id))
+        cursor.execute("update canciones set Titulo=%s, Artista=%s, Genero=%s, Precio=%s, Duracion=%s, A_Lanzamiento=%s,img=%s where ID_Cancion=%s",(Titulou,Artistau,Generou,Preciou,Duracionu,Fechau,imagenb,id))
         db.commit()
         return redirect(url_for('list_song'))
     else:
@@ -258,9 +279,106 @@ def update_song(id):
         data = cursor.fetchall()
         return render_template("C_update.html", cancion=data[0])
 
-
-
+@app.route("/cart/<int:id>")
+def cart(id):
+    cursor = db.cursor()
+    cursor.execute("select * from canciones where ID_Cancion = %s",(id,))
+    cancion = cursor.fetchone()
     
+    
+    if cancion:
+        cursor = db.cursor()
+        n = session["usuario"]
+        cursor.execute("select ID_Persona from persona where P_Usuario =%s ",(n,) )
+        usuarioi = cursor.fetchone()
+        if usuarioi:
+                usuario = usuarioi[0]
+                fecha = datetime.now()
+                precio = cancion[4]
+                can = cancion[0]
+                metodo = "Tarjeta"
+                cursor.execute("insert into compras (Fecha_Compra,Precio,ID_persona, ID_Cancion, MPago)VALUES(%s,%s,%s,%s,%s)",(fecha,precio,usuario,can,metodo))
+                db.commit() 
+        return redirect(url_for('listc_song'))
+    else:
+        print("NO SE EJECUTÓ")
+   
+    return redirect(url_for('listc_song', cancion = cancion))
+
+
+@app.route("/s_cart")
+def s_cart():
+    cursor = db.cursor()
+    usuario = session['usuario']
+    cursor.execute("select ID_Persona from persona where P_Usuario =%s",(usuario,))
+    sesion = cursor.fetchone()
+   
+    if sesion:
+        cursor.execute("select cp.Fecha_Compra, c.img, SUM(cp.Precio), COUNT(cp.ID_Cancion), c.Titulo, cp.ID_Compra, cp.ID_Cancion, cp.Precio, cp.MPago, p.ID_Persona from compras cp inner join canciones c ON cp.ID_Cancion = c.ID_Cancion inner join persona p on cp.ID_Persona = p.ID_Persona where cp.ID_Persona = %s group by c.ID_Cancion",(sesion[0],))
+        compras = cursor.fetchall()
+        if compras:
+            print("holaa")
+            carrito = []
+            for cancion in compras:
+                imagen = base64.b64encode(cancion[1]).decode('utf-8')
+                carrito.append({
+                    'fecha':cancion[0],
+                    'img':imagen,
+                    'total':cancion[2],
+                    'cantidad':cancion[3],
+                    'titulo':cancion[4],
+                    'idc':cancion[5],
+                    'id':cancion[6],
+                    'Precio':cancion[7],
+                    'metodo':cancion[8],
+                    'persona':cancion[9]
+                    })
+            return render_template("Carrito.html", compras = carrito)
+        else:
+            print("holaa888")
+            print(usuario)
+            return render_template("Carrito.html")
+    else:
+        print("Se pudrio todo")
+        return render_template("Carrito.html")
+
+
+@app.route("/d_cart/<int:id>/<int:idc>", methods=["GET"])
+def d_cart(id,idc):
+    cursor = db.cursor()
+    if request.method == "GET":
+        cursor.execute( "delete from compras where ID_Cancion=%s and ID_Compra=%s" , (id,idc))
+        db.commit()
+        return redirect(url_for("s_cart"))
+
+
+@app.route("/a_cart/<int:id>/<float:precio>/<string:metodo>/<string:fecha>/<int:persona>", methods=["GET","POST"])
+def a_cart(id,precio, metodo, fecha,persona):
+    fechao = datetime.strptime(fecha, '%Y-%m-%d').date()
+    cursor = db.cursor()
+    if request.method == "GET":
+        print("sos una capa")
+        cursor.execute("insert into compras (Fecha_Compra,Precio,ID_persona, ID_Cancion, MPago)VALUES(%s,%s,%s,%s,%s)",(fechao,precio,persona,id,metodo))
+        db.commit()
+        return redirect(request.referrer)  # Redirigir al usuario a la misma página desde donde vino
+    else:
+        return redirect(request.referrer)
+    
+@app.route("/da_cart") 
+def da_cart():
+    cursor = db.cursor()
+    usuario = session['usuario']
+    cursor.execute("select ID_Persona from persona where P_Usuario =%s",(usuario,))
+    sesion = cursor.fetchone()
+    if sesion:
+        #cursor.execute("ALTER TABLE compras AUTO_INCREMENT=0;")
+        #db.commit()
+        cursor.execute("DELETE FROM compras WHERE ID_Persona=%s", (sesion[0],))
+        db.commit()
+        return render_template("Carrito.html")
+    else:
+        return render_template("Carrito.html")
+
 if __name__ == '__main__':
     app.add_url_rule('/', view_func=login)
     app.run(debug = True, port=5000)

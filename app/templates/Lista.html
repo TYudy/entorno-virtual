@@ -9,21 +9,26 @@
 
     
 </head>
-<nav>
-    <ul >
-        <li >
-            <a href="{{ url_for('registrar_usuario') }}">Agregar usuario</a></button>
-        </li>
-        <li>
-            <a href="/logout">Agregar canción</a></button>
-        </li>
-        <li>
-            <a href="/logout">Cerrar sesión</a></button>
-        </li>
-    </ul>
-</nav>
+
 <body>
-    
+    <header>
+        <nav>
+            <ul >
+                <li >
+                    <a href="{{ url_for('registrar_usuario') }}">Agregar usuario</a></button>
+                </li>
+                <li>
+                    <a href="/a_cancion">Agregar canción</a></button>
+                </li>
+                <li>
+                    <a href="{{ url_for('list_song') }}">Canciones</a></button>
+                </li>
+            </ul>
+            
+        </nav>
+        <a href="/logout" class="btn"><button>Cerrar sesion</button></a>
+    </header>
+
     <div class="container">
         <div class="TT"><h1>Welcome User {{session['usuario']}}</h1></div>
         <table>

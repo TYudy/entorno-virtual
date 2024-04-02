@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/form.css')}}">
     <link rel="icon" href="{{ url_for('static', filename='img/sign in.png') }}" type="image/x-icon">
 
 </head>
@@ -69,6 +69,6 @@
         {% for message in get_flashed_messages(category_filter=["mensaje"]) %}
             <span class="mensaje-eu">{{ message }}</span>
             {% endfor %} 
-      
+            <a href="{{ url_for('lista') }}" class="btn"><button>Volver</button></a>
     </div>
 </html>

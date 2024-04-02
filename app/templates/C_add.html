@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add songs</title>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/form.css')}}">
     <link rel="icon" href="{{ url_for('static', filename='img/sign in.png') }}" type="image/x-icon">
 </head>
 <body>
+    <div class="container">
+        <div class="text"><h1>Add a song</h1></div>
 
     <form action="/a_cancion" method="post" enctype="multipart/form-data">
 
@@ -41,12 +43,9 @@
         </div>
         <button type="submit">Agregar</button>
 
-        
-
-
-
 
     </form>
-    
+    <a href="{{ url_for('lista') }}" class="btn"><button>Volver</button></a>
+    </div>
 </body>
 </html>

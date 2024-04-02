@@ -13,129 +13,36 @@ body{
     margin: auto;
     width: 100vw;
     height: 100vh;
+    color: white;
     overflow-x: hidden;
     
-    
 }
-
-
-header {
-    top: 0;
-    width: 100%;
-    background-color: #1E3B4B;
-    color: white;
-    padding: 10px; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 30px;
-    font-family: monospace;
-    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
-}
-
-nav{
-    
-    padding: 10px;
-    
-    
-    
-}
-ul{
-    list-style: none;
-   
-    
-   
-
-}
-li{
-    
-    margin-left: 30px;
-    float: left;
-}
-header .btn button{
-
-    background-color: #ffffff;
-    width: 150px;
-    height: 30px;
-    right: 0;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
-    border-radius: 3px;
-
-}
-
-
-
-header a{
-    text-decoration: none;
-    color: #ffffff;
-
-
-}
-header a:hover{
-    color: #F7D101;
-}
-
-header ul li:hover{
-    transform: scale(1.1);
-    
-
-}
-
-
-
-
-.container .btn button{
-    background-color: #ffffff;
-    width: 150px;
-    height: 30px;
-    right: 0;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
-    border-radius: 3px;
-
-}
-
-
-
-.btn button:hover{
-
-    transform: scale(1.2);
-    background-color: #F7D101;
-    color: white;
-
-}
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .container{
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(2, 2, 2, 0.19);
     padding: 80px;
     padding-top: 3%;
-    color: white;
+    
     
    
 }
 
- 
+
+
+
+ form{
+    display: grid;
+    background-color: #F7D101;
+    z-index: 10;
+    width: 100%;
+    justify-content: center;
+    grid-template-columns: 40% 40%;
+    padding: 50px;
+    border-radius: 5px;
+    box-shadow: 0 12px 16px 0 rgb(0, 0, 0), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    row-gap: 30px;
+    
+    }
 
 input:active{
     transform: translateY(2px);
@@ -146,7 +53,22 @@ form label{
 }
 
 
-
+ button{
+    background:none;
+    border: none;
+    color: #ffffff;
+    outline: 0;
+    border-bottom: 1px solid #ffffff;
+    display: inline-block;
+	width: 60%;
+	cursor: pointer;
+  	padding: 7px 10px;
+  	height: 30px;
+  	border: 0;
+	background: #1E3B4B;
+    border-radius: 3px;
+    box-shadow: 0 12px 16px 0 rgba(73, 72, 72, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
+}
 
 input{
     background:none;
@@ -160,7 +82,7 @@ input{
   	padding: 7px 10px;
   	height: 30px;
   	border: 0;
-	background: #bfbef9;
+	background: #F3F3F3;
     border-radius: 3px;
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
     
@@ -178,7 +100,7 @@ select{
   	padding: 7px 10px;
   	height: 30px;
   	border: 0;
-	background: #bfbef9;
+	background: #F3F3F3;
     border-radius: 3px;
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
     
@@ -205,7 +127,7 @@ table {
  th{
     
    padding: 1%;
-   background-color: #F7D101;
+   background-color: #464369;
    border-bottom: 2px solid white;
    text-shadow: 1px 1px 1px black;
    font-size: 15px;
@@ -213,13 +135,13 @@ table {
    
 }
 td:hover{
-    background-color: #F7D101;
+    background-color: #464369;
 
 }
  td{
     border-bottom: 2px solid white;
     padding: 0.5%;
-    background-color: #d6d0d0;
+    background-color: #8988a6;
     text-shadow: 1px 1px 1px black;
     font-size: 15px;
     
@@ -316,16 +238,16 @@ tbody:hover{
 
 
 
-.container a{
+a{
     text-decoration: none;
     color: #ffffff;
 }
-.container a:visited{
+a:visited{
     color: #ffffff;
 }
-.container a:hover{
+a:hover{
 
-    background-color: #1E3B4B;
+    background-color: #bfbef9;
 
 }
 .text{
@@ -351,10 +273,38 @@ tbody:hover{
     -webkit-backface-visibility: hidden;
 
 }
+@keyframes abajo {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(10px); 
+    }
+}
 
 @-webkit-keyframes aitf {
   0% { background-position: 0% 50%; }
   100% { background-position: 100% 50%; }
 }
 
+.container .btn button{
+    background-color: #ffffff;
+    width: 150px;
+    height: 30px;
+    right: 0;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(114, 114, 114, 0.19);
+    border-radius: 3px;
+    color: #000000;
 
+}
+
+
+
+.btn button:hover{
+
+    
+transform: scale(1.2);
+
+}
