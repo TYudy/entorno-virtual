@@ -164,6 +164,8 @@ def logout():
     print("Sesión finalizada")
     return redirect(url_for('login'))    
     
+
+#CANCIONES    
 @app.route("/a_cancion", methods =['GET', 'POST'])
 def add_song():
     cursor = db.cursor()
@@ -281,6 +283,9 @@ def update_song(id):
         data = cursor.fetchall()
         return render_template("C_update.html", cancion=data[0])
 
+
+
+#CARRITO
 @app.route("/cart/<int:id>")
 def cart(id):
     cursor = db.cursor()
@@ -384,6 +389,6 @@ def da_cart():
 if __name__ == '__main__':
     app.add_url_rule('/', view_func=login)
     app.run(debug = True, port=5000)
-#Rutas
+
     
 
