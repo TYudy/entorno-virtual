@@ -227,6 +227,7 @@ td:hover{
 
 td {
     user-select: none;
+    width: 20px;
   }
   td::selection {
     background: none;
@@ -235,15 +236,6 @@ td {
     background: none;
   }
 
-  th {
-    user-select: none;
-  }
-  th::selection {
-    background: none;
-  }
-  th::-moz-selection {
-    background: none;
-  }
 
 
 

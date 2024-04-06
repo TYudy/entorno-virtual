@@ -8,12 +8,10 @@ ID_persona int primary  key auto_increment,
  p_Direccion varchar (45) not null, 
  p_Telefono int not null, 
  p_Usuario varchar (45) not null, 
- p_Contraseña varchar (255) not null
+ p_Contraseña varchar (255) not null,
+ Roles varchar(55) not null
 );
-select * from persona;
-ALTER TABLE persona
-modify COLUMN p_Contraseña varchar(255) not null;
-describe persona;
+
 create table canciones(
 ID_Cancion int primary  key auto_increment,
  Titulo varchar (60) not null, 

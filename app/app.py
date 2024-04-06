@@ -215,7 +215,7 @@ def list_song():
             
         return render_template("C_lista.html", canciones = cancioneslist)
     else:
-        return print("canciones no encontradas")
+        return render_template("C_lista.html")
     
 
 @app.route("/lc_cancion")
