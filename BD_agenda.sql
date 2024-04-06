@@ -1,5 +1,6 @@
 create database agenda;
 use agenda;
+
 create table persona(
 ID_persona int primary  key auto_increment,
  P_Nombre varchar (45) not null, 
@@ -33,3 +34,4 @@ ID_Compra int primary  key auto_increment,
  foreign key (ID_persona) references persona(ID_persona),
  foreign key (ID_Cancion) references canciones(ID_Cancion)
 );
+.
