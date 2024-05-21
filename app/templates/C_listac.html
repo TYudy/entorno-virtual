@@ -7,7 +7,8 @@
     <title>Music</title>
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/Cards.css')}}">
     <link rel="icon" href="{{ url_for('static', filename='img/Disco.png') }}" type="image/x-icon">
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 </head>
 <body>
     
@@ -16,7 +17,9 @@
             <ul >
                 <li >
                     <button   href="" class="icon-button">
-                    <a href="/s_cart">
+                        <a href="/cart">
+                    <!-- <a href="/s_cart"> -->
+                    
                        
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="612.002px" height="612.002px" viewBox="0 0 612.002 612.002" style="enable-background:new 0 0 612.002 612.002;" xml:space="preserve">
                             <g>
@@ -73,11 +76,12 @@
                                 <p>Duración: {{ cancion.Duracion }}</p>
                                 <p>Año de Lanzamiento: {{ cancion.A_Lanzamiento }}</p>
                             
-                            <a href="{{ url_for('cart', id=cancion.ID_Cancion) }}" type="button">
+                            <a class="add-to-cart" data-id="{{cancion.ID_Cancion}}" data-title="{{cancion.Titulo}}" data-price="{{cancion.Precio}}" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" style="enable-background:new 0 0 128 128;" version="1.1" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M114.7,50.4l3.8-17.9l-17.4-5.6L95.5,9.4l-17.9,3.9L64,1L50.4,13.3L32.5,9.4l-5.6,17.4L9.4,32.5l3.8,17.9L1,64l12.3,13.6   L9.4,95.5l17.4,5.6l5.6,17.4l17.9-3.8L64,127l13.6-12.3l17.9,3.8l5.6-17.4l17.4-5.6l-3.8-17.9L127,64L114.7,50.4z M109.6,90.3   L95,95l-4.7,14.6l-15-3.2L64,116.6l-11.3-10.3l-15,3.2L33,95l-14.6-4.7l3.2-15L11.4,64l10.3-11.3l-3.2-15L33,33l4.7-14.6l15,3.2   L64,11.4l11.3,10.3l15-3.2L95,33l14.6,4.7l-3.2,15L116.6,64l-10.3,11.3L109.6,90.3z"/><polygon points="68,44 60,44 60,60 44,60 44,68 60,68 60,84 68,84 68,68 84,68 84,60 68,60  "/></g></svg>
-                
+                                
                 
                             </a>
+                            <!-- <button  class="add-to-cart" data-id="{{cancion.ID_Cancion}}" data-title="{{cancion.Titulo}}" data-price="{{cancion.Precio}}">Testeo</button> -->
                             
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-from flask import Flask , flash, render_template,request,redirect,url_for, session
+from flask import Flask , flash, render_template,request,redirect,url_for, session, jsonify
 import mysql.connector
 from werkzeug.security import generate_password_hash,check_password_hash
 from PIL import Image 
@@ -282,109 +282,141 @@ def update_song(id):
         cursor.execute("SELECT * FROM canciones WHERE ID_Cancion =%s", (id,))
         data = cursor.fetchall()
         return render_template("C_update.html", cancion=data[0])
+    
+
+#CARRITO CON JS
+@app.route("/cart", methods = ['GET','POST'])
+def ver_cart():
+    cart = session.get('cart',[])
+    total = sum(item['price'] for item in cart)
+    return render_template("Cart.html", cart = cart, total = total )
+
+@app.route("/a_cart", methods = ['GET','POST'])
+def add_cart():
+    idsg =request.form['id']
+    titlesg=request.form['title']
+    pricesg=request.form['price']
+
+    if 'cart' not in session:
+        session['cart'] = []
+    session['cart'].append({'id':idsg, 'title':titlesg, 'price':float(pricesg)})
+    session.modified = True
+    print("contenido del carro", session['cart'])
+
+
+    return jsonify({'message':'Canción agregada al carro'})
 
 
 
-#CARRITO
-@app.route("/cart/<int:id>")
-def cart(id):
-    cursor = db.cursor()
-    cursor.execute("select * from canciones where ID_Cancion = %s",(id,))
-    cancion = cursor.fetchone()
+
+
+
+
+
+
+
+
+
+#CARRITO ELABORADO CON PYTHON
+# @app.route("/cart/<int:id>")
+# def cart(id):
+#     cursor = db.cursor()
+#     cursor.execute("select * from canciones where ID_Cancion = %s",(id,))
+#     cancion = cursor.fetchone()
     
     
-    if cancion:
-        cursor = db.cursor()
-        n = session["usuario"]
-        cursor.execute("select ID_Persona from persona where P_Usuario =%s ",(n,) )
-        usuarioi = cursor.fetchone()
-        if usuarioi:
-                usuario = usuarioi[0]
-                fecha = datetime.now()
-                precio = cancion[4]
-                can = cancion[0]
-                metodo = "Tarjeta"
-                cursor.execute("insert into compras (Fecha_Compra,Precio,ID_persona, ID_Cancion, MPago)VALUES(%s,%s,%s,%s,%s)",(fecha,precio,usuario,can,metodo))
-                db.commit() 
-        return redirect(url_for('listc_song'))
-    else:
-        print("NO SE EJECUTÓ")
+#     if cancion:
+#         cursor = db.cursor()
+#         n = session["usuario"]
+#         cursor.execute("select ID_Persona from persona where P_Usuario =%s ",(n,) )
+#         usuarioi = cursor.fetchone()
+#         if usuarioi:
+#                 usuario = usuarioi[0]
+#                 fecha = datetime.now()
+#                 precio = cancion[4]
+#                 can = cancion[0]
+#                 metodo = "Tarjeta"
+#                 cursor.execute("insert into compras (Fecha_Compra,Precio,ID_persona, ID_Cancion, MPago)VALUES(%s,%s,%s,%s,%s)",(fecha,precio,usuario,can,metodo))
+#                 db.commit() 
+#         return redirect(url_for('listc_song'))
+#     else:
+#         print("NO SE EJECUTÓ")
    
-    return redirect(url_for('listc_song', cancion = cancion))
+#     return redirect(url_for('listc_song', cancion = cancion))
 
 
-@app.route("/s_cart")
-def s_cart():
-    cursor = db.cursor()
-    usuario = session['usuario']
-    cursor.execute("select ID_Persona from persona where P_Usuario =%s",(usuario,))
-    sesion = cursor.fetchone()
+# @app.route("/s_cart")
+# def s_cart():
+#     cursor = db.cursor()
+#     usuario = session['usuario']
+#     cursor.execute("select ID_Persona from persona where P_Usuario =%s",(usuario,))
+#     sesion = cursor.fetchone()
    
-    if sesion:
-        cursor.execute("select cp.Fecha_Compra, c.img, SUM(cp.Precio), COUNT(cp.ID_Cancion), c.Titulo, cp.ID_Compra, cp.ID_Cancion, cp.Precio, cp.MPago, p.ID_Persona from compras cp inner join canciones c ON cp.ID_Cancion = c.ID_Cancion inner join persona p on cp.ID_Persona = p.ID_Persona where cp.ID_Persona = %s group by c.ID_Cancion",(sesion[0],))
-        compras = cursor.fetchall()
-        if compras:
-            print("holaa")
-            carrito = []
-            for cancion in compras:
-                imagen = base64.b64encode(cancion[1]).decode('utf-8')
-                carrito.append({
-                    'fecha':cancion[0],
-                    'img':imagen,
-                    'total':cancion[2],
-                    'cantidad':cancion[3],
-                    'titulo':cancion[4],
-                    'idc':cancion[5],
-                    'id':cancion[6],
-                    'Precio':cancion[7],
-                    'metodo':cancion[8],
-                    'persona':cancion[9]
-                    })
-            return render_template("Carrito.html", compras = carrito)
-        else:
-            print("holaa888")
-            print(usuario)
-            return render_template("Carrito.html")
-    else:
-        print("Se pudrio todo")
-        return render_template("Carrito.html")
+#     if sesion:
+#         cursor.execute("select cp.Fecha_Compra, c.img, SUM(cp.Precio), COUNT(cp.ID_Cancion), c.Titulo, cp.ID_Compra, cp.ID_Cancion, cp.Precio, cp.MPago, p.ID_Persona from compras cp inner join canciones c ON cp.ID_Cancion = c.ID_Cancion inner join persona p on cp.ID_Persona = p.ID_Persona where cp.ID_Persona = %s group by c.ID_Cancion",(sesion[0],))
+#         compras = cursor.fetchall()
+#         if compras:
+#             print("holaa")
+#             carrito = []
+#             for cancion in compras:
+#                 imagen = base64.b64encode(cancion[1]).decode('utf-8')
+#                 carrito.append({
+#                     'fecha':cancion[0],
+#                     'img':imagen,
+#                     'total':cancion[2],
+#                     'cantidad':cancion[3],
+#                     'titulo':cancion[4],
+#                     'idc':cancion[5],
+#                     'id':cancion[6],
+#                     'Precio':cancion[7],
+#                     'metodo':cancion[8],
+#                     'persona':cancion[9]
+#                     })
+#             return render_template("Carrito.html", compras = carrito)
+#         else:
+#             print("holaa888")
+#             print(usuario)
+#             return render_template("Carrito.html")
+#     else:
+#         print("Se pudrio todo")
+#         return render_template("Carrito.html")
 
 
-@app.route("/d_cart/<int:id>/<int:idc>", methods=["GET"])
-def d_cart(id,idc):
-    cursor = db.cursor()
-    if request.method == "GET":
-        cursor.execute( "delete from compras where ID_Cancion=%s and ID_Compra=%s" , (id,idc))
-        db.commit()
-        return redirect(url_for("s_cart"))
+# @app.route("/d_cart/<int:id>/<int:idc>", methods=["GET"])
+# def d_cart(id,idc):
+#     cursor = db.cursor()
+#     if request.method == "GET":
+#         cursor.execute( "delete from compras where ID_Cancion=%s and ID_Compra=%s" , (id,idc))
+#         db.commit()
+#         return redirect(url_for("s_cart"))
 
 
-@app.route("/a_cart/<int:id>/<float:precio>/<string:metodo>/<string:fecha>/<int:persona>", methods=["GET","POST"])
-def a_cart(id,precio, metodo, fecha,persona):
-    fechao = datetime.strptime(fecha, '%Y-%m-%d').date()
-    cursor = db.cursor()
-    if request.method == "GET":
-        print("sos una capa")
-        cursor.execute("insert into compras (Fecha_Compra,Precio,ID_persona, ID_Cancion, MPago)VALUES(%s,%s,%s,%s,%s)",(fechao,precio,persona,id,metodo))
-        db.commit()
-        return redirect(request.referrer)  # Redirigir al usuario a la misma página desde donde vino
-    else:
-        return redirect(request.referrer)
+# @app.route("/a_cart/<int:id>/<float:precio>/<string:metodo>/<string:fecha>/<int:persona>", methods=["GET","POST"])
+# def a_cart(id,precio, metodo, fecha,persona):
+#     fechao = datetime.strptime(fecha, '%Y-%m-%d').date()
+#     cursor = db.cursor()
+#     if request.method == "GET":
+#         print("sos una capa")
+#         cursor.execute("insert into compras (Fecha_Compra,Precio,ID_persona, ID_Cancion, MPago)VALUES(%s,%s,%s,%s,%s)",(fechao,precio,persona,id,metodo))
+#         db.commit()
+#         return redirect(request.referrer)  # Redirigir al usuario a la misma página desde donde vino
+#     else:
+#         return redirect(request.referrer)
     
-@app.route("/da_cart") 
-def da_cart():
-    cursor = db.cursor()
-    usuario = session['usuario']
-    cursor.execute("select ID_Persona from persona where P_Usuario =%s",(usuario,))
-    sesion = cursor.fetchone()
-    if sesion:
-        #cursor.execute("ALTER TABLE compras AUTO_INCREMENT=0;")
-        #db.commit()
-        cursor.execute("DELETE FROM compras WHERE ID_Persona=%s", (sesion[0],))
-        db.commit()
-        return render_template("Carrito.html")
-    else:
-        return render_template("Carrito.html")
+# @app.route("/da_cart") 
+# def da_cart():
+#     cursor = db.cursor()
+#     usuario = session['usuario']
+#     cursor.execute("select ID_Persona from persona where P_Usuario =%s",(usuario,))
+#     sesion = cursor.fetchone()
+#     if sesion:
+#         #cursor.execute("ALTER TABLE compras AUTO_INCREMENT=0;")
+#         #db.commit()
+#         cursor.execute("DELETE FROM compras WHERE ID_Persona=%s", (sesion[0],))
+#         db.commit()
+#         return render_template("Carrito.html")
+#     else:
+#         return render_template("Carrito.html")
 
 if __name__ == '__main__':
     app.add_url_rule('/', view_func=login)
