@@ -15,5 +15,14 @@ $(document).ready(function(){
         });
 
     });
-
+    $('.delete').on('click',function(){
+        const idc = $(this).data('id');
+        console.log(idc)
+        // $.post('/d_cart',{
+            // id:idc
+            
+        // }, function(data){
+        //     alert(data);
+        // });
+    });
 });

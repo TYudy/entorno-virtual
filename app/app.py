@@ -309,7 +309,19 @@ def add_cart():
 
 
 
+@app.route("/da_cart", methods=["GET"])
+def da_cart():
+    session['cart'].clear()
+    session.modified = True
+    return render_template("Cart.html")
 
+@app.route("/d_cart/<int:id>" , methods = ['GET'])
+def d_cart(id):
+  session['cart'].get(id)
+  return render_template("Cart.html")
+
+   
+        
 
 
 
