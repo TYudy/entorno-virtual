@@ -10,19 +10,34 @@ $(document).ready(function(){
             title:titlesg,
             price:pricesg
 
-        }, function(data){
-            alert(data.message || `Agregar la canción`);
+        }, function(){
+            window.location.href = '//lc_cancion';
+            // alert(data.message || `Agregar la canción`);
         });
 
     });
     $('.delete').on('click',function(){
-        const idc = $(this).data('id');
-        console.log(idc)
-        // $.post('/d_cart',{
-            // id:idc
-            
-        // }, function(data){
-        //     alert(data);
+        const itemId = $(this).data('id');
+        console.log(itemId)
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/d_cart', // La URL de la ruta Flask
+        //     data: { id: itemId }, // Pasar el ID como datos de la solicitud
+        //     success: function() {
+        //         window.location.href = '/cart';
+        //     },
+        //     // error: function(xhr, status, error) {
+        //     //     // Manejar errores si es necesario
+        //     //     console.error(error);
+        //     // }
         // });
+        $.post('/d_cart',{
+            id: itemId
+            
+        }, function(){
+            window.location.href = '/cart';
+        });
+
+    
     });
 });

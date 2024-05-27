@@ -298,7 +298,7 @@ def add_cart():
     pricesg=request.form['price']
 
     if 'cart' not in session:
-        session['cart'] = []
+        session['cart'] = [] 
     session['cart'].append({'id':idsg, 'title':titlesg, 'price':float(pricesg)})
     session.modified = True
     print("contenido del carro", session['cart'])
@@ -315,13 +315,25 @@ def da_cart():
     session.modified = True
     return render_template("Cart.html")
 
-@app.route("/d_cart/<int:id>" , methods = ['GET'])
-def d_cart(id):
-  session['cart'].get(id)
-  return render_template("Cart.html")
+@app.route("/d_cart" , methods = ['GET','POST'])
+def d_cart():
+    
+    item_id = request.form.get('id')  
+    if 'cart' in session:
+        cart = session['cart']
+        for item in cart:
+            if item['id'] == item_id:
+                cart.remove(item)
+                session['cart'] = cart
 
-   
-        
+                session.modified = True
+                return jsonify({'message': 'Elemento eliminado del carrito'})
+    return jsonify({'error': 'El elemento no se encontró en el carrito'}), 404
+
+    
+
+
+
 
 
 
