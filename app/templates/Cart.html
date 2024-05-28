@@ -15,11 +15,12 @@
     <header>
         
     <a href="{{ url_for('listc_song') }}" class="btn"><button>Volver</button></a>
-    <a href="#"  class="bt"><button>Realizar compra</button></a>
     <a href="{{ url_for('da_cart') }}" class="bt"><button>Eliminar carrito</button></a>
+    <a class="bt" style="  margin-top: 20px; justify-self: center; "><button> ${{ total }} <strong>Buy</strong></button></a>
     </header>
     
     <div class="container">
+        
         {%for c in cart%}
         <div class="card-list">
             <article class="card">
@@ -78,7 +79,8 @@
 
 
     </div>
-    <a class="bt" style="  margin-top: 20px; justify-self: center; "><button> ${{ total }} <strong>Buy</strong></button></a>
+    <div class="TT"><h1>{{session['usuario']}}'s Cart</h1></div>
+    
     
 </body>
 </html>

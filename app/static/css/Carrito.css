@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+	font-family: monospace;
 
 }
 
@@ -13,23 +14,25 @@
 body{
     min-height: 100vh;
     background: #081C25;
-    justify-content: center;
-    align-items: center;
     font-family: monospace;
     padding: 200px;
     padding-top: 80px;
     width: 100vw;
+	
     
     
   }
 
   .container{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(2, 2, 2, 0.19);
     padding: 80px;
     padding-top: 3%;
+	
+	
+
     
     
   }
@@ -56,7 +59,7 @@ img {
 	overflow: hidden;
 	padding: 1.25rem;
 	position: relative;
-	margin-top: 50px;
+	margin: 20px 0;
 	
 	}
 	
@@ -210,3 +213,40 @@ header{
 	   
 	  }
 }
+
+.TT{
+    
+    text-align: center;
+    font: 500 2em/1 monospace;
+    letter-spacing: 0;
+    padding: .25em 0 .325em;
+    display: block;
+    margin: 0 auto;
+    text-shadow: 0 0 80px rgba(255,255,255,.5);
+
+    background: url('/static/img/Patron.png') repeat-y;
+    -webkit-background-clip: text;
+    background-clip: text;
+
+
+
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: aitf 80s linear infinite;
+
+
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+}
+
+@keyframes abajo {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(10px); 
+    }
+}
+@-webkit-keyframes aitf {
+	0% { background-position: 0% 50%; }
+	100% { background-position: 100% 50%; }
+  }
